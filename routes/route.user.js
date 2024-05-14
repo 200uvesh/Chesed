@@ -63,7 +63,9 @@ import {
   showContactUs,
   showPrivacyPolicy,
   showTermAndCondition,
-  showFAQ
+  showFAQ,
+  createDynamicRequest,
+  findRequestByCategoryName,
 } from "../controllers/controller.user.js";
 
 import { createMulterMiddleware } from "../middlewares/multer.js";
@@ -85,8 +87,8 @@ userRoute.get("/v1/ViewMyProfile", verifyJWT, ViewMyProfile);
 userRoute.post("/v1/googleLogin", googleLogin);
 userRoute.get("/v1/verifyGoogle", verifyGoogle);
 userRoute.post("/v1/addDocument", verifyJWT, uploads, addDocument);
-userRoute.post("/v1/addAddress" , verifyJWT , addAddress)
-userRoute.get("/v1/ChesedHistory" , verifyJWT , ChesedHistory)
+userRoute.post("/v1/addAddress", verifyJWT, addAddress);
+userRoute.get("/v1/ChesedHistory", verifyJWT, ChesedHistory);
 
 // Create request
 userRoute.post("/v1/createRideShare", verifyJWT, createRideShare);
@@ -136,20 +138,25 @@ userRoute.get("/v1/requestCreatedByMe", verifyJWT, requestCreatedByMe);
 userRoute.get("/v1/acceptedRequestByMe", verifyJWT, acceptedRequestByMe);
 
 // Notification
-userRoute.get("/v1/setEmailNotification" , verifyJWT , setEmailNotification)
-userRoute.get("/v1/setPushNotification" , verifyJWT , setPushNotification)
-userRoute.get("/v1/setSMSNotification" , verifyJWT , setSMSNotification)
+userRoute.get("/v1/setEmailNotification", verifyJWT, setEmailNotification);
+userRoute.get("/v1/setPushNotification", verifyJWT, setPushNotification);
+userRoute.get("/v1/setSMSNotification", verifyJWT, setSMSNotification);
 
-userRoute.get("/v1/showPrivacyPolicy" , verifyJWT , showPrivacyPolicy)
-userRoute.get("/v1/showTermAndCondition" , verifyJWT , showTermAndCondition)
-userRoute.get("/v1/showContactUs" , verifyJWT , showContactUs)
-userRoute.get("/v1/showAboutUs" , verifyJWT , showAboutUs)
-userRoute.get("/v1/showFAQ" , verifyJWT , showFAQ)
+userRoute.get("/v1/showPrivacyPolicy", verifyJWT, showPrivacyPolicy);
+userRoute.get("/v1/showTermAndCondition", verifyJWT, showTermAndCondition);
+userRoute.get("/v1/showContactUs", verifyJWT, showContactUs);
+userRoute.get("/v1/showAboutUs", verifyJWT, showAboutUs);
+userRoute.get("/v1/showFAQ", verifyJWT, showFAQ);
 
 // Testing
 userRoute.post("/v1/createRequest", verifyJWT, createRequest);
-userRoute.get("/v1/getRandomImage" , getRandomImage)
-userRoute.get("/v1/fetchWordDefinitions" , fetchWordDefinitions)
-
+userRoute.get("/v1/getRandomImage", getRandomImage);
+userRoute.get("/v1/fetchWordDefinitions", fetchWordDefinitions);
+userRoute.post("/v1/createDynamicRequest", verifyJWT, createDynamicRequest);
+userRoute.get(
+  "/v1/findRequestByCategoryName",
+  verifyJWT,
+  findRequestByCategoryName
+);
 
 export { userRoute };

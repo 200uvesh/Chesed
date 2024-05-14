@@ -19,7 +19,7 @@ const Chizuk_Schema = mongoose.Schema(
     Help_Reason: {
       type: String,
     },
-    Tyoe_Of_Help: {
+    Type_Of_Help: {
       type: String,
     },
     Gender: {

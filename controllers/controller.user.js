@@ -42,7 +42,8 @@ import { PrivacyPolicy } from "../models/model.privacyPolicy.js";
 import { TermAndCondition } from "../models/model.termAndCondition.js";
 import { ContactUs } from "../models/model.contactUs.js";
 import { About } from "../models/model.aboutUs.js";
-import { FAQ} from "../models/model.FAQ.js"
+import { FAQ } from "../models/model.FAQ.js";
+import { CreateRequest } from "../models/model.Category.js";
 
 // SignUp (DONE)
 const SignUp = asyncHandler(async (req, res) => {
@@ -215,7 +216,6 @@ const verifyEmailOTP = asyncHandler(async (req, res) => {
     User_Details
   );
 });
-
 
 // Verify Phone (DONE)
 const verifyPhoneOTP = asyncHandler(async (req, res) => {
@@ -1875,83 +1875,6 @@ const ChesedHistory = asyncHandler(async (req, res) => {
   return APIresponse(res, "History found Sucessfully!", 200, true, History);
 });
 
-//------------------***********--------------//
-// Test API's
-const GOOGLE_API_KEY = "AIzaSyDOTM44YKPwaP8Svznu5_0f-yoDwXc5TRk";
-const CX = "91fee730f5fed42f8";
-const SEARCH_URL = "https://www.googleapis.com/customsearch/v1";
-
-const getRandomImage = async (req, res) => {
-  try {
-    const randomSeed = Math.floor(Math.random() * 100) + 1;
-    console.log(randomSeed);
-    const response = await axios.get(SEARCH_URL, {
-      params: {
-        key: GOOGLE_API_KEY,
-        cx: CX,
-        q: "random",
-        num: 5, // Number of images to fetch
-        searchType: "image",
-        start: randomSeed,
-      },
-    });
-    const imageUrl = response.data.items.map((item) => item.link);
-    res.json({ imageUrl });
-  } catch (error) {
-    console.error("Error fetching random image:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
-// Oxford Dictionaries API configuration
-const APP_ID = "9356dc15";
-const APP_KEY = "cd210f6352fa3fcfba25ea71a1c61426";
-const BASE_URL = "https://od-api-sandbox.oxforddictionaries.com/api/v2";
-
-// Function to fetch word definitions
-const fetchWordDefinitions = async (req, res) => {
-  const { word } = req.body;
-  console.log(word);
-
-  try {
-    const response = await axios.get(
-      `${BASE_URL}/entries/en-gb/${word.toLowerCase()}`,
-      {
-        headers: {
-          app_id: APP_ID,
-          app_key: APP_KEY,
-        },
-      }
-    );
-
-    // return res.status(201).json.stringify({ response });
-    if (response.data && response.data.results.length > 0) {
-      // Extract definitions from the response
-      const definitions = response.data.results.map((result) => {
-        return {
-          word: result.word,
-          lexicalCategory: result.lexicalEntries[0].lexicalCategory.text,
-          definitions: result.lexicalEntries[0].entries[0].senses.map(
-            (sense) => sense.definitions[0]
-          ),
-        };
-      });
-
-      return res.status(200).json(definitions);
-    } else {
-      // No entry found matching the word
-      return res
-        .status(404)
-        .json({ message: "No definitions found for the word." });
-    }
-  } catch (error) {
-    // Handle other errors
-
-    console.error("Error fetching word definitions:", error);
-    return res.status(500).json({ Error: "Internal Server Error" });
-  }
-};
-
 // EmailNotification (DONE)
 const setEmailNotification = asyncHandler(async (req, res) => {
   const { Check } = req.body;
@@ -2078,7 +2001,6 @@ const setSMSNotification = asyncHandler(async (req, res) => {
   }
 });
 
-
 // Show PrivacyPolicy (DONE)
 const showPrivacyPolicy = asyncHandler(async (req, res) => {
   const privacy_policy = await PrivacyPolicy.find({});
@@ -2089,7 +2011,7 @@ const showPrivacyPolicy = asyncHandler(async (req, res) => {
   return APIresponse(res, "Privacy Policy found", 200, true, privacy_policy);
 });
 
-// showTermAndCondition ()
+// showTermAndCondition (DONE)
 const showTermAndCondition = asyncHandler(async (req, res) => {
   const term_condition = await TermAndCondition.find({});
   if (!term_condition) {
@@ -2129,6 +2051,133 @@ const showFAQ = asyncHandler(async (req, res) => {
     return APIresponse(res, "FAQ not found", 400, false);
   }
   return APIresponse(res, "FAQ found", 200, true, faq);
+});
+
+// ---------------------##############------------**********--------------
+//                      TEST API's
+// ---------------------##############------------**********--------------
+// Test API's
+const GOOGLE_API_KEY = "AIzaSyDOTM44YKPwaP8Svznu5_0f-yoDwXc5TRk";
+const CX = "91fee730f5fed42f8";
+const SEARCH_URL = "https://www.googleapis.com/customsearch/v1";
+
+const getRandomImage = async (req, res) => {
+  try {
+    const randomSeed = Math.floor(Math.random() * 100) + 1;
+    console.log(randomSeed);
+    const response = await axios.get(SEARCH_URL, {
+      params: {
+        key: GOOGLE_API_KEY,
+        cx: CX,
+        q: "random",
+        num: 5, // Number of images to fetch
+        searchType: "image",
+        start: randomSeed,
+      },
+    });
+    const imageUrl = response.data.items.map((item) => item.link);
+    res.json({ imageUrl });
+  } catch (error) {
+    console.error("Error fetching random image:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+// Oxford Dictionaries API configuration
+const APP_ID = "9356dc15";
+const APP_KEY = "cd210f6352fa3fcfba25ea71a1c61426";
+const BASE_URL = "https://od-api-sandbox.oxforddictionaries.com/api/v2";
+
+// Function to fetch word definitions
+const fetchWordDefinitions = async (req, res) => {
+  const { word } = req.body;
+  console.log(word);
+
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/entries/en-gb/${word.toLowerCase()}`,
+      {
+        headers: {
+          app_id: APP_ID,
+          app_key: APP_KEY,
+        },
+      }
+    );
+
+    // return res.status(201).json.stringify({ response });
+    if (response.data && response.data.results.length > 0) {
+      // Extract definitions from the response
+      const definitions = response.data.results.map((result) => {
+        return {
+          word: result.word,
+          lexicalCategory: result.lexicalEntries[0].lexicalCategory.text,
+          definitions: result.lexicalEntries[0].entries[0].senses.map(
+            (sense) => sense.definitions[0]
+          ),
+        };
+      });
+
+      return res.status(200).json(definitions);
+    } else {
+      // No entry found matching the word
+      return res
+        .status(404)
+        .json({ message: "No definitions found for the word." });
+    }
+  } catch (error) {
+    // Handle other errors
+
+    console.error("Error fetching word definitions:", error);
+    return res.status(500).json({ Error: "Internal Server Error" });
+  }
+};
+
+// Dynamic (createDynamicRequest) (DONE)
+const createDynamicRequest = asyncHandler(async (req, res) => {
+  const allFields = req.body;
+  if (!allFields) {
+    return APIresponse(res, "Plese Enter Required Fields", 400, false);
+  }
+
+  const category_created = await CreateRequest.create(allFields);
+  if (!category_created) {
+    return APIresponse(res, "Category not created", 400, false);
+  }
+  category_created.userId = req.user._id;
+  await category_created.save();
+
+  const allCategory = await AllCategory.create({
+    userId: req.user._id,
+    requestId: category_created._id,
+    category_number: category_created.category_Id,
+    category_name: category_created.Service_Name,
+  });
+
+  if (!allCategory) {
+    return APIresponse(res, "Request not saved Sucessfully !", 400, false);
+  }
+
+  return APIresponse(
+    res,
+    "Category Created Sucessfully",
+    201,
+    true,
+    category_created
+  );
+});
+
+// find by category using (Regular Expression):-
+const findRequestByCategoryName = asyncHandler(async (req, res) => {
+  const { category_name } = req.body;
+  const regex = new RegExp(category_name, "i"); // 'i' for case-insensitive search
+  const category = await CreateRequest.find({
+    Category_Name: { $regex: regex },
+  });
+  if (!category) {
+    return APIresponse(res, "Category not found", 400, false);
+  }
+
+  return APIresponse(res, "Category found sucessfully!!", 200, true, category);
 });
 
 // Exports
@@ -2193,5 +2242,7 @@ export {
   showAboutUs,
   showContactUs,
   showTermAndCondition,
-  showPrivacyPolicy
+  showPrivacyPolicy,
+  createDynamicRequest,
+  findRequestByCategoryName,
 };

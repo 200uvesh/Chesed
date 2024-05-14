@@ -20,8 +20,7 @@ import {
   termAndCondition,
   contactUs,
   aboutUs,
-  FAQs
-  
+  FAQs,
 } from "../controllers/constroller.admin.js";
 
 adminRoute.post("/v1/createAdmin", createAdmin);
@@ -42,11 +41,10 @@ adminRoute.get("/v1/numberOfUserDonates", verifyAdmin, numberOfUserDonates);
 adminRoute.get("/v1/totalRevenue", verifyAdmin, totalRevenue);
 adminRoute.get("/v1/newUser", verifyAdmin, newUser);
 
-adminRoute.post("/v1/privacyPolicy" , verifyAdmin , privacyPolicy)
-adminRoute.post("/v1/termAndCondition" , verifyAdmin , termAndCondition)
-adminRoute.post("/v1/contactUs" , verifyAdmin ,contactUs)
-adminRoute.post("/v1/aboutUs" , verifyAdmin , aboutUs)
-adminRoute.post("/v1/FAQs" , verifyAdmin , FAQs)
+adminRoute.post("/v1/privacyPolicy", verifyAdmin, privacyPolicy);
+adminRoute.post("/v1/termAndCondition", verifyAdmin, termAndCondition);
+adminRoute.post("/v1/contactUs", verifyAdmin, contactUs);
+adminRoute.post("/v1/aboutUs", verifyAdmin, aboutUs);
+adminRoute.post("/v1/FAQs", verifyAdmin, FAQs);
 
 export { adminRoute };
-

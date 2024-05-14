@@ -62,6 +62,7 @@ const createAdmin = asyncHandler(async (req, res) => {
     );
 });
 
+
 // Login Adnmin (DONE)
 const LoginAdmin = asyncHandler(async (req, res) => {
   const { Email, Password, secret_key } = req.body;
@@ -112,6 +113,7 @@ const LoginAdmin = asyncHandler(async (req, res) => {
       })
     );
 });
+
 
 // Update Admin (DONE)
 const updateAdmin = asyncHandler(async (req, res) => {
@@ -224,6 +226,7 @@ const newUser = asyncHandler(async (req, res) => {
   return APIresponse(res, "new User", 200, true, { newUser: new_user });
 });
 
+
 // create privacyPolicy (DONE)
 const privacyPolicy = asyncHandler(async (req, res) => {
   const description = req.body;
@@ -322,6 +325,7 @@ const FAQs = asyncHandler(async (req, res) => {
 
   return APIresponse(res, "FAQ created Sucessfully", 201, true, FAQcreated);
 });
+
 
 export {
   createAdmin,
